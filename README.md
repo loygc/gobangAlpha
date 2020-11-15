@@ -1,1 +1,1 @@
-# -gobangAlpha
+# gobangAlpha
