@@ -1,17 +1,17 @@
 //
-//  AlphaMain.hpp
+//  AlphaMain.h
 //  gobangAlpha
 //
-//  Created by Loyio Macbook on 2020/11/14.
+//  Created by Loyio Macbook on 2020/11/15.
 //
 
-#ifndef AlphaMain_hpp
-#define AlphaMain_hpp
+#ifndef AlphaMain_h
+#define AlphaMain_h
 
 #include <SDL2/SDL.h>
 #include <SDL2_net/SDL_net.h>
 #include <SDL2_ttf/SDL_ttf.h>
-#include "alphaAlgo.hpp"
+#include "alphaAlgo.h"
 
 int AlphaApp() {
     //Initialize all SDL subsystems
@@ -141,4 +141,4 @@ int AlphaApp() {
     return 0;
 }
 
-#endif /* AlphaMain_hpp */
+#endif /* AlphaMain_h */

@@ -6,7 +6,7 @@
 //
 
 #include <iostream>
-#include "AlphaMain.hpp"
+#include "AlphaMain.h"
 
 int main(int argc, const char * argv[]) {
     AlphaApp();
