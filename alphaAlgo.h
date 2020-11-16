@@ -78,13 +78,18 @@ int evaluation(){
     return 0;
 }
 
-int calcDirScore(int posX, int poxY, int board[][15]){
+int calcDirScore(int posX, int posY, int board[][15]){
     int addScore = 0;
     list<int> pos;
     //各个方向的得分
     int scoreDir[5];
     
-    for(int i=i-4; i<)
+    //横向
+    for(int i=posX-4; i<=posX;i++){
+        if (i < 0) {
+            continue;
+        }
+    }
     
     
     
