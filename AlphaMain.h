@@ -13,6 +13,9 @@
 #include <SDL2_ttf/SDL_ttf.h>
 #include "alphaAlgo.h"
 
+
+
+
 int AlphaApp() {
     //Initialize all SDL subsystems
     if (SDL_Init(SDL_INIT_EVERYTHING) == -1) {

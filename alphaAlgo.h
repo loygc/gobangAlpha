@@ -12,6 +12,9 @@
 
 #include <iostream>
 
+int cut_count = 0;
+int search_count = 0;
+
 using namespace std;
 
 int nextStep[2];
@@ -42,6 +45,11 @@ struct shapeScore{
     {50000, {1,1,1,1,0}},
     {99999999, {1,1,1,1,1}}
 };
+
+
+doubla negamax(int is_ai, int depth; double alpha; double beta){
+    
+}
 
 
 bool equalArray(int a[], int b[], int size){
@@ -159,10 +167,6 @@ int calcDirScore(int posX, int posY, const int board[][15]){
     return addScore;
 }
 
-int negamax(int depth, int alpha, int beta){
-    return 0;
-}
-
 
 
 int evaluation(){
@@ -174,7 +178,7 @@ int evaluation(){
 
 
 
-bool checkWin(int piece[][15], int type) {
+bool checkWin(const int piece[][15], int type) {
     //对行进行循环判断
     for (int i = 0; i < 15; i++)
         for (int j = 0; j < 11; j++)
@@ -235,7 +239,12 @@ bool checkWin(int piece[][15], int type) {
 }
 
 
-
+doubla negamax(const int data[][15], int is_ai, int depth; double alpha; double beta){
+    if (checkWin(data, 1) || checkWin(data, 2) || depth == 0) {
+        return evaluation(data,)
+    }
+    return alpha;
+}
 
 void AIwork(const int data[][15], int &x, int &y) {
     //第一步棋
@@ -260,9 +269,6 @@ void AIwork(const int data[][15], int &x, int &y) {
     }
     
 }
-
-
-
 
 
 
