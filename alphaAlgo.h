@@ -11,15 +11,8 @@
 #define DEPTH 3;
 
 #include <iostream>
-#include <list>
 
 using namespace std;
-
-int aiList[100];
-
-int playerList[100];
-
-int allList[100];
 
 int nextStep[2];
 
@@ -28,8 +21,8 @@ int winPieceY[5];
 
 struct shapeScore{
     int score;
-    int shapeWin[6];
-}shapeScores[15]={
+    int shapeWin[5];
+}shapeScores[18]={
     {50, {0,1,1,0,0}},
     {50, {0,0,1,1,0}},
     {200, {1,1,0,1,0}},
@@ -51,20 +44,119 @@ struct shapeScore{
 };
 
 
+bool equalArray(int a[], int b[], int size){
+    for(int i = 0; i < size; i++){
+        if (a[i] == b[i]) {
+            continue;
+        }
+        return false;
+    }
+    return true;
+}
 
-
-void AIwork(const int data[][15], int &x, int &y) {
-    //第一步棋
-    int cutCount = 0;
-    int searchCount = 0;
-    for (int i = 0; i < 15; i++)
-            for (int j = 0; j < 15; j++)
-                if (data[i][j] == 0) {
-                    x = i;
-                    y = j;
-                    return;
+int** copyWithplayer(const int board[][15], int player){
+    int** copyBoard = {0};
+    if (player == 1) {
+        for(int i=0;i<15;i++){
+            for(int j=0;j<15;j++){
+                copyBoard[i][j] = board[i][j];
+            }
+        }
+    }else if (player == 2){
+        for(int i=0;i<15;i++){
+            for(int j=0;j<15;j++){
+                if(board[i][j] == 2){
+                    copyBoard[i][j] = 1;
+                }else if(board[i][j] == 1){
+                    copyBoard[i][j] == 2;
                 }
+            }
+        }
+    }
+
+    return copyBoard;
+}
+
+
+int calcDirScore(int posX, int posY, const int board[][15]){
     
+    int addScore = 0;
+    //各个方向的得分 0:横向 1:纵向 2:反斜线 3:斜线
+    int scoreDir[4] = {0};
+    
+    int fiveModel[5];
+    
+    
+    //横向
+    for(int i=posX-4; i<=posX;i++){
+        if (i < 0) {
+            continue;
+        }else{
+            for (int j=i; j < i+5; j++) {
+                fiveModel[j-i] = board[j][posY];
+            }
+            for (int k = 0; k <= 18; k++) {
+                if(equalArray(fiveModel, shapeScores[k].shapeWin, 5)){
+                    scoreDir[0]+=shapeScores[k].score;
+                };
+            }
+        }
+    }
+    
+    
+    //纵向
+    for(int i=posY-4; i<=posY; i++){
+        if (i < 0) {
+            continue;
+        }else{
+            for (int j=i; j < i+5; j++) {
+                fiveModel[j-i] = board[posX][j];
+            }
+            for (int k = 0; k <= 18; k++) {
+                if(equalArray(fiveModel, shapeScores[k].shapeWin, 5)){
+                    scoreDir[1]+=shapeScores[k].score;
+                };
+            }
+        }
+    }
+    
+    //反斜向
+    for(int i=posX-4;i<=posX;i++){
+        if (i < 0 || posY-(posX-i) < 0) {
+            continue;
+        }else{
+            for(int j = i; j < i+5; j++){
+                fiveModel[j-i] = board[i][posY-(posX-i)];
+            }
+            for (int k = 0; k <= 18; k++) {
+                if(equalArray(fiveModel, shapeScores[k].shapeWin, 5)){
+                    scoreDir[2]+=shapeScores[k].score;
+                };
+            }
+        }
+    }
+    
+    //斜向
+    for(int i=posX+4;i<=posX;i++){
+        if (i < 0 || posY-(i-posX) < 0) {
+            continue;
+        }else{
+            for(int j = i; j < i+5; j++){
+                fiveModel[j-i] = board[i][posY-(i-posX)];
+            }
+            for (int k = 0; k <= 18; k++) {
+                if(equalArray(fiveModel, shapeScores[k].shapeWin, 5)){
+                    scoreDir[3]+=shapeScores[k].score;
+                };
+            }
+        }
+    }
+    
+    for(int i=0; i < 4;i++){
+        addScore += scoreDir[i];
+    }
+
+    return addScore;
 }
 
 int negamax(int depth, int alpha, int beta){
@@ -78,25 +170,9 @@ int evaluation(){
     return 0;
 }
 
-int calcDirScore(int posX, int posY, int board[][15]){
-    int addScore = 0;
-    list<int> pos;
-    //各个方向的得分
-    int scoreDir[5];
-    
-    //横向
-    for(int i=posX-4; i<=posX;i++){
-        if (i < 0) {
-            continue;
-        }
-    }
-    
-    
-    
-    
-    
-    return 0;
-}
+
+
+
 
 bool checkWin(int piece[][15], int type) {
     //对行进行循环判断
@@ -157,6 +233,34 @@ bool checkWin(int piece[][15], int type) {
             }
     return false;
 }
+
+
+
+
+void AIwork(const int data[][15], int &x, int &y) {
+    //第一步棋
+    int cutCount = 0;
+    int searchCount = 0;
+//    for (int i = 0; i < 15; i++){
+//        for (int j = 0; j < 15; j++){
+//            cout << data[i][j];
+//        }
+//        cout << endl;
+//    }
+    
+    for (int i = 0; i < 15; i++){
+        for (int j = 0; j < 15; j++){
+            if (data[i][j] == 0) {
+                x = i;
+                y = j;
+                cout << calcDirScore(5, 4, data) << endl;
+                return;
+            }
+        }
+    }
+    
+}
+
 
 
 
